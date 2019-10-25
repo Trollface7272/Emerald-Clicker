@@ -1,5 +1,5 @@
 <?php
-    if(isset($_POST['submit']) && isset($_POST['username']) && isset($_POST['password'])) {
+    if(isset($_POST['register']) && isset($_POST['username']) && isset($_POST['password'])) {
         $username = $_POST['username'];
         $password = $_POST['password'];
         $mysqli = new mysqli(
@@ -8,13 +8,13 @@
         );
         $sql = "INSERT INTO users (user, password) VALUES ('$username', '$password')";
         if($mysqli->query($sql)){
-            header('./clicker.php');
+            header('Location: ./index.php');
         } else {
-            if(startsWith($mysqli->error,'Duplicate entry')) {
+            if(startsWith($mysqli->error,'Duplicate entry'))
                 echo 'Username is already in use.';
             else
                 echo $mysqli->error;
-            exit
+            exit;
         }
         
     }
