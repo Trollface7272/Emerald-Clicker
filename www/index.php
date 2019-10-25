@@ -27,7 +27,7 @@
         }
         function register() {
             forms.innerHTML =
-                `<form method="POST" action="register.php">
+                `<form method="POST" action="index.php">
                 <input type="text" name="username" placeholder="Username"> <br>
                 <input type="password" name="password" placeholder="Password"><br>
                 <input type="password" name="confirmPassword" placeholder="Repeat Password"><br>
@@ -37,6 +37,7 @@
         </script>
         <?php
             include 'login.php';
+            include 'register.php';
         ?>
 
     
