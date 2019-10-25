@@ -6,14 +6,14 @@
         //"localhost", "root", "", "clicker"
     );
     $emeralds = $_POST['emeralds'];
-    $cursors = implode($_POST['upgrades'][0]);
+    $pickaxes = implode($_POST['upgrades'][0]);
     $villagers = implode($_POST['upgrades'][1]);
     $farms = implode($_POST['upgrades'][2]);
     $mines = implode($_POST['upgrades'][3]);
     $factories = implode($_POST['upgrades'][4]);
     $sql = "UPDATE `users` SET 
         `emeralds`= $emeralds,
-        `cursors`= $cursors,
+        `pickaxes`= $pickaxes,
         `villagers`= $villagers,
         `farms`= $farms,
         `mines`= $mines,

@@ -11,6 +11,7 @@
 <body>
     <div id="selector">
         <div id="register" onclick="register()">Register</div>
+        <div id="guest" onclick="window.location.href = './clicker.php'">Play as Guest</div>
         <div id="login" onclick="login()">Login</div>
     </div>
     <div id="forms"></div>

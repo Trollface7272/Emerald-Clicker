@@ -1,5 +1,6 @@
 <?php
     if(isset($_POST['register']) && isset($_POST['username']) && isset($_POST['password'])) {
+        if(empty($_POST['username']) || empty($_POST['password'])){echo 'You havn\'t entered name/password';return;};
         $username = $_POST['username'];
         $password = $_POST['password'];
         $mysqli = new mysqli(

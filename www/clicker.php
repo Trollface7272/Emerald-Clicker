@@ -29,8 +29,10 @@
     <div id="header"></div>
     <div id="nop"></div>
     <div id='site'>
-        <div id='cookie'><img src="Source/cookie.png" onclick="cookieClick()"></div>
-        <div id='cookieCount'></div>
+        <div id='cookie'><img src="Source/cookie.png" onclick="cookieClick()">
+            <div id='cookieCount'></div>
+        </div>
+        
         <div id="menu">
             <div class="menuButton" id="save">Save</div>
             <div class="menuButton" id="logout">Logout</div>
@@ -38,7 +40,7 @@
         <div id='upgradeMenu'>
         <div id='upgradeBoosters'></div>
             <div id='boosters'>
-                <div id='cursor' class='' onclick='add("cursor", "cursor")'></div>
+                <div id='pickaxe' class='' onclick='add("pickaxe", "pickaxe")'></div>
                 <div id='villagers'class='' onclick='add("villager", "villager")'></div>
                 <div id='farms'class='' onclick='add("farm", "farm")'></div>
                 <div id='mines'class='' onclick='add("mine", "mine")'></div>
@@ -50,19 +52,19 @@
 
     <script>
         var cookie = document.getElementById('cookie')
-        var cursors = document.getElementById('cursor')
+        var pickaxes = document.getElementById('pickaxe')
         var villagers = document.getElementById('villagers')
         var farms = document.getElementById('farms')
         var mines = document.getElementById('mines')
         var factories = document.getElementById('factories')
         var cookieCount = document.getElementById('cookieCount')
         initialize()
-
+        var username = "<?php echo $data['user']?>";
 
         jQuery(function($){
             $('#save').click(function() {
-                if($_SESSION['username'] == 'guest') return;
-                $.redirect('./save.php', {emeralds: cookie.emeralds, 'upgrades[]': [cookie.cursors, cookie.villagers, cookie.farms, cookie.mines, cookie.factories]}, 'POST')
+                if(username == 'guest') return;
+                $.redirect('./save.php', {emeralds: cookie.emeralds, 'upgrades[]': [cookie.pickaxes, cookie.villagers, cookie.farms, cookie.mines, cookie.factories]}, 'POST')
             })
             $('#logout').click(function() {
                 $.redirect('./logout.php')
@@ -70,7 +72,7 @@
         })
         
         function cookieClick() {
-            cookie.emeralds = cookie.emeralds+1+cookie.cursors
+            cookie.emeralds = cookie.emeralds+1+cookie.pickaxes
             displayCurrentemeralds()
             checkForUpgrades()
         }
@@ -92,8 +94,8 @@
 
         function add(key, key2) {
             switch (key2) {
-                case 'cursor':
-                    buyUpgrade(cookie.cursorCost, 'cursor')
+                case 'pickaxe':
+                    buyUpgrade(cookie.pickaxeCost, 'pickaxe')
                     break
                 
                 case 'villager':
@@ -116,8 +118,8 @@
                     break
             }
             switch (key) {
-                case 'cursor':
-                    addUpgrade(0, "Cursor", cursors, cookie.cursorCost, cookie.cursors, 'Adds 1 power to clicking')
+                case 'pickaxe':
+                    addUpgrade(0, "Pickaxe", pickaxes, cookie.pickaxeCost, cookie.pickaxes, 'Adds 1 power to clicking')
                     break
                 
                 case 'villager':
@@ -143,9 +145,9 @@
 
         function addUpgrades(key) {
             switch (key) {
-                case 'cursor':
-                    cookie.cursors++
-                    cookie.cursorCost = Math.round(100 * Math.pow(1.25, cookie.cursors))
+                case 'pickaxe':
+                    cookie.pickaxes++
+                    cookie.pickaxeCost = Math.round(100 * Math.pow(1.25, cookie.pickaxes))
                     break
 
                 case 'villager':
@@ -192,7 +194,7 @@
         }
 
         function autoGain() {
-            cookie.clickGain = 1 + cookie.cursors
+            cookie.clickGain = 1 + cookie.pickaxes
             cookie.autoGain = 10*cookie.villagers
             cookie.autoGain += 100*cookie.farms
             cookie.autoGain += 200*cookie.mines
@@ -216,26 +218,26 @@
             cookie.emeralds = <?php echo $data['emeralds']?>;
 
             //Upgrades
-            cookie.cursors = <?php echo $data['cursors']?>;
+            cookie.pickaxes = <?php echo $data['pickaxes']?>;
             cookie.villagers = <?php echo $data['villagers']?>;
             cookie.farms = <?php echo $data['farms']?>;
             cookie.mines = <?php echo $data['mines']?>;
             cookie.factories = <?php echo $data['factories']?>;
 
             //Click Gain
-            cookie.clickGain = cookie.cursors + 1
+            cookie.clickGain = cookie.pickaxes + 1
 
             //Auto Gain
             autoGain();
 
             //Upgrade Costs
-            cookie.cursorCost = Math.floor(100 * Math.pow(1.15, cookie.cursors))
+            cookie.pickaxeCost = Math.floor(100 * Math.pow(1.15, cookie.pickaxes))
             cookie.villagerCost = Math.floor(500 * Math.pow(1.15, cookie.villagers))
             cookie.farmCost = Math.floor(1500 * Math.pow(1.15, cookie.farms))
             cookie.mineCost = Math.floor(15000 * Math.pow(1.15, cookie.mines))
             cookie.factoryCost = Math.floor(200000 * Math.pow(1.15, cookie.factories))
 
-            add("cursor")
+            add("pickaxe")
             work()
             var interval = setInterval(work, 1000)
         }
