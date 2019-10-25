@@ -1,0 +1,166 @@
+* {
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+body {
+    background-color: gainsboro;
+    background-size: 50%;
+    touch-action: manipulation;
+    user-select: none;
+}
+#cookie {
+    position: relative;
+    width: 500px;
+    height: 500px;
+    float: left;
+    clear: both;
+    font-size: 1em;
+}
+#cookie img {
+    width: 300px;
+    padding-top: 150px;
+    padding-left: 220px;
+}
+#upgradeMenu {
+    float: right;
+    clear: right;
+    height: 94vh;
+    width: 520px;
+    background-image: linear-gradient(lime, orange);
+    border: solid black 5px;
+    border-radius: 10px;
+    overflow-y: scroll;
+    margin-right: 50px;
+}
+.worker {
+    width: 490px;
+    height: 108px;
+    border: solid black 3px;
+    margin: auto;
+    margin-top: 2px;
+    background-image: repeating-linear-gradient(rgba(255, 0, 0, 0.2), rgba(0, 0, 255, 0.2))
+}
+.workerTitle {
+    font-size: 1.5em;
+    text-align: center;
+    width: 382.2px;
+    border-bottom: black solid 1px;
+    margin-left: auto;
+}
+.workerDescription {
+    font-size: 1.3em;
+    float: left;
+    padding-left: 5px;
+}
+#cookieCount {
+    position: absolute;
+    top: 8%;
+    left: 5%;
+    clear: both;
+    font-size: 50px;
+}
+#Cursor-icon {
+    height: 100%;
+    width: 107.8px;
+    background-image: url('./Source/cursor-icon.png');
+    background-size: 100%;
+    border-right: black solid 1px;
+    float: left;
+    background-repeat: no-repeat;
+}
+#Villager-icon {
+    height: 100%;
+    width: 107.8px;
+    background-image: url('./Source/grandma-icon.png');
+    background-size: 100%;
+    border-right: black solid 1px;
+    float: left;
+    background-repeat: no-repeat;
+}
+#Farm-icon {
+    height: 100%;
+    width: 107.8px;
+    background-image: url('./Source/farm-icon.png');
+    background-size: 100%;
+    border-right: black solid 1px;
+    float: left;
+    background-repeat: no-repeat;
+}
+#Mine-icon {
+    height: 100%;
+    width: 107.8px;
+    background-image: url('./Source/mine-icon.png');
+    background-size: 100%;
+    border-right: black solid 1px;
+    float: left;
+    background-repeat: no-repeat;
+}
+#Factory-icon {
+    height: 100%;
+    width: 107.8px;
+    background-image: url('./Source/factory-icon.png');
+    background-size: 100%;
+    border-right: black solid 1px;
+    float: left;
+    background-repeat: no-repeat;
+}
+#hackerman {
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    
+}
+#header {
+    width: 100%;
+    height: 30px;
+    border-bottom: black solid 2px;
+    text-align: center;
+    font-size: 30px;
+    background-image: linear-gradient(90deg, red, yellow);
+    background: linear-gradient(90deg, red 0%, yellow 15%, lime 30%, cyan 50%, blue 65%, magenta 80%, red 100%);
+    background-size: 200%;
+    animation: moveGradient 3s linear infinite;
+  
+  
+}
+#nop {
+    height: 10px;
+    width: 100%;
+}
+#upgradeBoosters {
+    width: 100%;
+    height: 150px;
+}
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+    
+::-webkit-scrollbar-track {
+    background: #f5f5f5;
+    border-radius: 10px;
+}
+    
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: #ccc;  
+}
+    
+::-webkit-scrollbar-thumb:hover {
+    background: #999;  
+}
+
+@keyframes moveGradient
+{
+    0%{
+      background-position: 0% 0%;
+    }
+    100%{
+      background-position: -200% 0%;
+    }
+}
