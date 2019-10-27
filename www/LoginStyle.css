@@ -20,6 +20,19 @@ form {
     margin: 18%;
     margin-left: 45%;
 }
+#check {
+    position: absolute;
+    width: fit-content;
+    margin: 0 auto;
+    margin-left: 42%;
+    top: 100px;
+    font-size: 30px;
+    color: red;
+    padding: 10px;
+    border: solid rgb(255, 187, 0) 3px;
+    border-radius: 20px;
+    visibility: hidden;
+}
 input[type=text], input[type=password] {
     width: 200px;
     margin-bottom: 5px;

@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/countup.js/1.8.2/countUp.min.js'></script>
     <script src="scripts/jquery.redirect/jquery.redirect.js"></script>
+
+
     <?php
         session_start();
     ?>
@@ -30,7 +33,8 @@
     <div id="nop"></div>
     <div id='site'>
         <div id='cookie'><img src="Source/cookie.png" onclick="cookieClick()">
-            <div id='cookieCount'></div>
+            <div id='cookieCount'>Emeralds: <span id="cookies">0</span><br>
+            <span id="EPS">0</span> EPS</div>
         </div>
         
         <div id="menu">
@@ -49,8 +53,11 @@
         </div>
     </div>
     <div id='hackerman' onclick='emeraldsHack()'></div>
-
+    
     <script>
+         var username = "<?php echo $data['user']?>";
+
+         
         var cookie = document.getElementById('cookie')
         var pickaxes = document.getElementById('pickaxe')
         var villagers = document.getElementById('villagers')
@@ -58,13 +65,19 @@
         var mines = document.getElementById('mines')
         var factories = document.getElementById('factories')
         var cookieCount = document.getElementById('cookieCount')
+        var Game = {}
+        var countUpEmeralds
+        var countUpEPS
         initialize()
-        var username = "<?php echo $data['user']?>";
-
+        
+        
+        
+       
+        if(username == 'guest') document.getElementById('logout').innerHTML = 'Login'
         jQuery(function($){
             $('#save').click(function() {
                 if(username == 'guest') return;
-                $.redirect('./save.php', {emeralds: cookie.emeralds, 'upgrades[]': [cookie.pickaxes, cookie.villagers, cookie.farms, cookie.mines, cookie.factories]}, 'POST')
+                $.redirect('./save.php', {emeralds: Game.emeralds, 'upgrades[]': [Game.pickaxes, Game.villagers, Game.farms, Game.mines, Game.factories]}, 'POST')
             })
             $('#logout').click(function() {
                 $.redirect('./logout.php')
@@ -72,13 +85,12 @@
         })
         
         function cookieClick() {
-            cookie.emeralds = cookie.emeralds+1+cookie.pickaxes
+            Game.emeralds = Game.emeralds+1
             displayCurrentemeralds()
             checkForUpgrades()
         }
 
         function addUpgrade(costD, upgradeName, h, cost, ammount, description) {
-            if(cookie.emeralds < costD) return
             let icon = `${upgradeName}-icon`
             h.innerHTML = `
             <div class="worker">
@@ -95,23 +107,23 @@
         function add(key, key2) {
             switch (key2) {
                 case 'pickaxe':
-                    buyUpgrade(cookie.pickaxeCost, 'pickaxe')
+                    buyUpgrade(Game.pickaxeCost, 'pickaxe')
                     break
                 
                 case 'villager':
-                    buyUpgrade(cookie.villagerCost, 'villager')
+                    buyUpgrade(Game.villagerCost, 'villager')
                     break
 
                 case 'farm':
-                    buyUpgrade(cookie.farmCost, 'farm')
+                    buyUpgrade(Game.farmCost, 'farm')
                     break
 
                 case 'mine': 
-                    buyUpgrade(cookie.mineCost, 'mine')
+                    buyUpgrade(Game.mineCost, 'mine')
                     break
 
                 case 'factory':
-                    buyUpgrade(cookie.factoryCost, 'factory')
+                    buyUpgrade(Game.factoryCost, 'factory')
                     break
 
                 default:
@@ -119,23 +131,23 @@
             }
             switch (key) {
                 case 'pickaxe':
-                    addUpgrade(0, "Pickaxe", pickaxes, cookie.pickaxeCost, cookie.pickaxes, 'Adds 1 power to clicking')
+                    addUpgrade(0, "Pickaxe", pickaxes, Game.pickaxeCost, Game.pickaxes, 'Adds 1 power to clicking')
                     break
                 
                 case 'villager':
-                    addUpgrade(200, "Villager", villagers, cookie.villagerCost, cookie.villagers, 'Adds 10 auto production')
+                    addUpgrade(200, "Villager", villagers, Game.villagerCost, Game.villagers, 'Adds 10 auto production')
                     break
 
                 case 'farm':
-                    addUpgrade(1500, "Farm", farms, cookie.farmCost, cookie.farms, 'Adds 100 auto production')
+                    addUpgrade(1500, "Farm", farms, Game.farmCost, Game.farms, 'Adds 100 auto production')
                     break
 
                 case 'mine': 
-                    addUpgrade(15000, "Mine", mines, cookie.mineCost, cookie.mines, 'Adds 200 auto production')
+                    addUpgrade(15000, "Mine", mines, Game.mineCost, Game.mines, 'Adds 200 auto production')
                     break
 
                 case 'factory':
-                    addUpgrade(200000, "Factory", factories, cookie.factoryCost, cookie.factories, 'Adds 500 auto production')
+                    addUpgrade(200000, "Factory", factories, Game.factoryCost, Game.factories, 'Adds 500 auto production')
                     break
 
                 default:
@@ -144,103 +156,105 @@
         }
 
         function addUpgrades(key) {
-            switch (key) {
-                case 'pickaxe':
-                    cookie.pickaxes++
-                    cookie.pickaxeCost = Math.round(100 * Math.pow(1.25, cookie.pickaxes))
-                    break
-
-                case 'villager':
-                    cookie.villagers++
-                    cookie.villagerCost = Math.round(500 * Math.pow(1.15, cookie.villagers))
-                    break
-            
-                case 'farm':
-                    cookie.farms++
-                    cookie.farmCost = Math.round(1500 * Math.pow(1.15, cookie.farms))
-                    break
-
-                case 'mine':
-                    cookie.mines++
-                    cookie.mineCost = Math.round(15000 * Math.pow(1.15, cookie.mines))
-                    break
-
-                case 'factory': 
-                    cookie.factories++
-                    cookie.factoryCost = Math.floor(200000 * Math.pow(1.15, cookie.factories))
-                    break
-
-                default:
-                    break
-            }
+            if(key == 'pickaxe') Game.pickaxes++
+            if(key == 'villager') Game.villagers++
+            if(key == 'farm') Game.farms++
+            if(key == 'mine') Game.mines++
+            if(key == 'factory') Game.factories++
+            getCost()
         }
 
         function buyUpgrade(cost, upgrade) {
-            if(cookie.emeralds < cost) return
-            cookie.emeralds -= cost
-            addUpgrades(upgrade, cookie)
+            if(Game.emeralds < cost) return
+            Game.emeralds -= cost
+            addUpgrades(upgrade)
             autoGain()
             displayCurrentemeralds()
         }
 
+        function getCost() {
+            Game.pickaxeCost = Math.round(150 * Math.pow(1.15, Game.pickaxes))
+            Game.villagerCost = Math.round(1000 * Math.pow(1.15, Game.villagers))
+            Game.farmCost = Math.round(11000 * Math.pow(1.15, Game.farms))
+            Game.mineCost = Math.round(120000 * Math.pow(1.15, Game.mines))
+            Game.factoryCost = Math.floor(1300000 * Math.pow(1.15, Game.factories))
+        }
+
         function emeraldsHack() {
-            cookie.emeralds = 9999999
+            Game.emeralds = 9999999
         }
 
         function work() {
-            cookie.emeralds += cookie.autoGain
-            displayCurrentemeralds()
+            Game.emeralds += Game.autoGain
+            countUpEmeralds.update(Game.emeralds)
             checkForUpgrades()
         }
 
         function autoGain() {
-            cookie.clickGain = 1 + cookie.pickaxes
-            cookie.autoGain = 10*cookie.villagers
-            cookie.autoGain += 100*cookie.farms
-            cookie.autoGain += 200*cookie.mines
-            cookie.autoGain += 500*cookie.factories
+            Game.autoGain = Game.pickaxes
+            Game.autoGain += 10*Game.villagers
+            Game.autoGain += 100*Game.farms
+            Game.autoGain += 400*Game.mines
+            Game.autoGain += 500*Game.factories
+            countUpEPS.update(Game.autoGain)
         }
 
         function displayCurrentemeralds() {
-            cookieCount.innerHTML = `${cookie.emeralds} Emeralds. <br>
-            ${cookie.autoGain} EPS`
         }
 
         function checkForUpgrades() {
-            if(cookie.emeralds > 500) add("villager")
-            if(cookie.emeralds > 1500) add("farm")
-            if(cookie.emeralds > 15000) add("mine")
-            if(cookie.emeralds > 200000) add("factory")
+            if(Game.emeralds > 500) add("villager")
+            if(Game.emeralds > 1500) add("farm")
+            if(Game.emeralds > 15000) add("mine")
+            if(Game.emeralds > 200000) add("factory")
+            if(Game.villagers > 0) add('villager')
+            if(Game.farms > 0) add('farm')
+            if(Game.mines > 0) add('mine')
+            if(Game.factories > 0) add("factory")
         }
 
         function initialize() {
+            //CountUps
+            
             //emeralds
-            cookie.emeralds = <?php echo $data['emeralds']?>;
+            Game.emeralds = <?php echo $data['emeralds']?>;
 
             //Upgrades
-            cookie.pickaxes = <?php echo $data['pickaxes']?>;
-            cookie.villagers = <?php echo $data['villagers']?>;
-            cookie.farms = <?php echo $data['farms']?>;
-            cookie.mines = <?php echo $data['mines']?>;
-            cookie.factories = <?php echo $data['factories']?>;
+            Game.pickaxes = <?php echo $data['pickaxes']?>;
+            Game.villagers = <?php echo $data['villagers']?>;
+            Game.farms = <?php echo $data['farms']?>;
+            Game.mines = <?php echo $data['mines']?>;
+            Game.factories = <?php echo $data['factories']?>;
 
             //Click Gain
-            cookie.clickGain = cookie.pickaxes + 1
+            Game.clickGain = 1
 
             //Auto Gain
-            autoGain();
+            var options = {  
+                useEasing: true,
+                useGrouping: true,
+                separator: ',',
+                decimal: '.',
+                prefix: '',
+                suffix: '',
+                duration: 1,
+            };
+            countUpEPS = new CountUp('EPS', 0, options)
+            autoGain()
+            countUpEPS.start()
 
+            //Count Up
+            countUpEmeralds = new CountUp('cookies', Game.emeralds+Game.autoGain, options)
+            countUpEmeralds.start()
+            
             //Upgrade Costs
-            cookie.pickaxeCost = Math.floor(100 * Math.pow(1.15, cookie.pickaxes))
-            cookie.villagerCost = Math.floor(500 * Math.pow(1.15, cookie.villagers))
-            cookie.farmCost = Math.floor(1500 * Math.pow(1.15, cookie.farms))
-            cookie.mineCost = Math.floor(15000 * Math.pow(1.15, cookie.mines))
-            cookie.factoryCost = Math.floor(200000 * Math.pow(1.15, cookie.factories))
+            getCost()
 
-            add("pickaxe")
+            add("pickaxe") 
             work()
             var interval = setInterval(work, 1000)
         }
+
     </script>
 </body>
 </html>
