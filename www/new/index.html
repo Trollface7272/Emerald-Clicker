@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="CSS/login.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="buttons-login-form">
+        <div id="errors"></div>
+        <form autocomplete="off" method="POST" action="login.php" id="forms">
+            <div id="button-login-switch" onclick="changeToLogin()">Login</div>
+            <div id="button-register-switch" onclick="changeToRegister()">Register</div>
+            <input type="text" name="username" id="username-field" placeholder="Username"><br>
+            <input type="password" name="password" id="password-field" placeholder="Password"><br>
+            <input type="password" name="password-confirm" id="password-confirm-field" placeholder="Confirm Password"><br>
+            <input type="submit" name="login" value="Login" id="login-button" onclick="login()"><br>
+        </form>
+    </div>
+
+    <script>
+        var button = document.getElementById('login-button')
+        var cookie = document.cookie.split(';').map(function(el){return el.split('=')}).reduce(function(prev, cur){prev[cur[0]] = cur[1];return prev}, {})
+        var errorMessage = cookie.error
+        while(errorMessage.includes('+')) errorMessage = errorMessage.replace('+', ' ')
+        while(errorMessage.includes('%27')) errorMessage = errorMessage.replace('%27', '\'')
+        if(errorMessage != null) document.getElementById('errors').innerHTML = errorMessage
+        function login() {
+            
+        }
+        function register() {
+            
+        }
+        function changeToLogin() {
+            button.onclick = login
+            button.name = 'login'
+            button.value = 'Login'
+            document.getElementById('password-confirm-field').style.visibility = 'hidden'
+            document.getElementById('forms').action = 'login.php'
+        }
+        function changeToRegister() {
+            button.onclick = register
+            button.name = 'register'
+            button.value = 'Register'
+            document.getElementById('password-confirm-field').style.visibility = 'visible'
+            document.getElementById('forms').action = 'register.php'
+        }
+    </script>
+</body>
+</html>
