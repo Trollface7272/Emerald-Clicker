@@ -8,6 +8,10 @@
         //"remotemysql.com", "cldhl9QKa9", "xF2D0SXPJL", "cldhl9QKa9"
         "localhost", "root", "", "clicker"
     );
-    $sql = "SELECT * FROM `users` WHERE `username` = $_POST[username] AND `password` = $password";
-    $users = $mysqli->query($sql);
+    $sql = "SELECT * FROM `users` WHERE `username` = '$_POST[username]' AND `password` = '$password'";
+    $user = $mysqli->query($sql);
+    $user = $user->fetch_assoc() {
+        $userInfo = $user
+    };
+    print_r($userInfo->username);
 ?>

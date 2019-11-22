@@ -10,6 +10,7 @@
     <div id="left-container">
         <div id="emeralds"></div>
         <div id="emeralds-per-second"></div>
+        <div id="emerald" onclick="click()"></div>
     </div>
     <div id="middle-container">
 
@@ -17,5 +18,19 @@
     <div id="right-container">
 
     </div>
+
+
+
+    <script>
+        var browserCookie = document.cookie.split(';').map(function(el){return el.split('=')}).reduce(function(prev, cur){prev[cur[0]] = cur[1];return prev}, {})
+        var gameData = {}
+        getGameData()
+        function click() {
+
+        }
+        function getGameData() {
+            if(browserCookie.gameData === null || browserCookie.gameData === undefined) window.location = './index.html'
+        }
+    </script>
 </body>
 </html>
